@@ -21,8 +21,18 @@ class JsonStorage:
             tasks["current_task_id"] += 1
             data[user_id] = tasks
         else:
-            ...
-            #TODO: добавить пользователя, если его нет
+            data[user_id] = {
+                "current_task_id": 1,
+                "to_do":[],
+                "in_progress":[],
+                "done": [],
+            }
+            
+            data[user_id][str(task.status)].append({
+                'id': 1,
+                'name': task.name,
+                'description': task.description,
+            })
         
         with open(self.path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
