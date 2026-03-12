@@ -1,6 +1,6 @@
 import json
 
-from kanban.task_service import Task
+from kanban.models import Task
 
 
 class JsonStorage:
@@ -22,7 +22,7 @@ class JsonStorage:
             data[user_id] = tasks
         else:
             data[user_id] = {
-                "current_task_id": 1,
+                "current_task_id": 0,
                 "to_do":[],
                 "in_progress":[],
                 "done": [],
@@ -39,18 +39,31 @@ class JsonStorage:
 
         
     def get_user_current_task_id(self, user_id: int):
-        ...
+        with open(self.path) as f:
+            data = json.load(f)
+        if user_id in data:
+            return data[user_id]["current_task_id"]
+        else:
+            data[user_id] = {
+                "current_task_id": 0,
+                "to_do":[],
+                "in_progress":[],
+                "done": [],
+            }
+        
+
+        
 
 
-file =
-{
-    "321": ...
-    "123":{
-        "current_task_id": 3
-        "to_do":['id':2, 'name':'abhs', 'description': 'сделать что-то'}]
-        "in_progres":[{'id':2, 'name':'abhs', 'description': 'сделать что-то'}]
-        "done": [...]
-    }
-    "789": ...
-}
+# file =
+# {
+#     "321": ...
+#     "123":{
+#         "current_task_id": 3
+#         "to_do":['id':2, 'name':'abhs', 'description': 'сделать что-то'}]
+#         "in_progres":[{'id':2, 'name':'abhs', 'description': 'сделать что-то'}]
+#         "done": [...]
+#     }
+#     "789": ...
+# }
 
