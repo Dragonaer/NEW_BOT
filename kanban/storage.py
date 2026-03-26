@@ -51,9 +51,32 @@ class JsonStorage:
                 "done": [],
             }
         
+    def get_task_by_id(self, user_id, task_id):
+        with open(self.path) as f:
+            data = json.load(f)
+        user = data[str(user_id)]
+        for task in user["to_do"]:
+            if task["id"] == task_id:
+                return Task(task["name"], task["description"], "to_do")
+        for task in user["in_progress"]:
+            if task["id"] == task_id:
+                return Task(task["name"], task["description"], "in_progress")
+        for task in user["done"]:
+            if task["id"] == task_id:
+                return Task(task["name"], task["description"], "done")
 
-        
 
+    def save_task(self, user_id: int, task_id: int, task: Task):
+        with open(self.path) as f:
+            data = json.load(f)
+        task_data = {
+            'id': task_id,
+            'name': task.name,
+            'description': task.description,
+        }
+        data[str(user_id)][str(task.status)] = task_data
+        with open(self.path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
 
 # file =
 # {
