@@ -32,11 +32,3 @@ class TaskServiсe:
         return task
 
 
-# {
-#     "123":{
-#         "current_task_id": 3
-#         "to_do":[...]
-#         "in_progres":[{'id':2, 'name':'abhs', 'description': 'сделать что-то'}]
-#         "done": [...]
-#     }
-# }

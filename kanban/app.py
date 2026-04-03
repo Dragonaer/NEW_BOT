@@ -23,7 +23,30 @@ bot = telebot.TeleBot(token, parse_mode="HTML")
 def hello(message):
     bot.send_message(
         message.chat.id,
-        "Привет, я бот для расписаний"
+        "Приветики, я бот для расписаний."
+    )
+
+@bot.message_handler(commands=["new_task"])
+def add_new_task(message):
+    # "/new_task Название задачи - Описание задачи"
+    text = message.text.lstrip("/new_task").strip()
+    if not text:
+        bot.send_message(
+        message.chat.id,
+        (
+            "Для того, чтобы создать задачу укажи"
+            "/new_task Название задачи - Описание задачи"
+        ) 
+    )
+    else:
+        name, description = text.split(" - ")
+        task = task_service.create_task(message.chat.id, name, description)
+        bot.send_message(
+        message.chat.id,
+        (
+            "Задача создана успешно и занесена в список задач."
+            f"{task.name}"
+        ) 
     )
 
 def run() -> None:
