@@ -1,5 +1,4 @@
-# from kanban.app import run
+from kanban.app import run
 
 if __name__ == "__main__":
-    print(type(A()))
-    # run()
+    run()
