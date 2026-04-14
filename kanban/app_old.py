@@ -6,11 +6,14 @@ from pathlib import Path
 
 import telebot
 from telebot import types
+from telebot import apihelper
 
 from kanban.domain.models import Status
 from kanban.service.task_service import TaskNotFoundError, TaskService, ValidationError
 from kanban.storage.json_store import JsonStore
 
+
+apihelper.proxy = {'https': 'socks5://10.0.2.2:12335'}
 
 STATUS_LABELS = {
     Status.TODO: "ToDo",
