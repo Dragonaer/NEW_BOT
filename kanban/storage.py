@@ -1,5 +1,5 @@
 import json
-
+import os
 from kanban.models import Task
 
 
@@ -8,8 +8,11 @@ class JsonStorage:
         self.path = path
     
     def add_user_task(self, user_id: int, task: Task):
-        with open(self.path) as f:
-            data = json.load(f)
+        if os.path.exists(self.path):
+            with open(self.path) as f:
+                data = json.load(f)
+        else: 
+            data = {}
 
         if user_id in data:
             tasks = data[user_id]
