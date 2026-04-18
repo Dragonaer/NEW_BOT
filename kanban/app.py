@@ -50,6 +50,18 @@ def add_new_task(message):
              f"{task.name}"),
         )
 
+@bot.message_handler(commands=["get_tasks"])
+def get_all_tasks(message):
+    tasks = task_service.get_tasks(message.chat.id)
+    markup = types.InlineKeyboardMarkup(row_width=3)
+    for task in tasks:
+        markup.add(types.InlineKeyboardButton(task.name, callback_data="task_{task.name}"))
+    bot.send_message(
+        message.chat.id,
+        "Задачи:",
+        reply_markup=markup
+    )
+
 
 def run() -> None:
     bot.infinity_polling(skip_pending=True)

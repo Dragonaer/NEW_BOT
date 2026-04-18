@@ -12,6 +12,24 @@ class TaskServiсe:
         self.storage.add_user_task(user_id, task)
         return task
 
+    def get_tasks(self, user_id: int):
+        data = self.storage.get_all_tasks(user_id)
+        tasks = []
+        for task in data["to_do"]:
+            tasks.append(Task(name=task["name"], description=task["description"], status=TaskStatus("to_do")))
+        for task in data['in_progress']:
+            tasks.append(Task(name=task["name"], description=task["description"], status=TaskStatus('in_progress')))
+        for task in data["done"]:
+            tasks.append(Task(name=task["name"], description=task["description"], status=TaskStatus("done")))
+        return tasks
+
+# {
+#         "current_task_id": 3
+#         "to_do":[{'id':2, 'name':'abhs', 'description': 'сделать что-то'}]
+#         "in_progres":[{'id':2, 'name':'abhs', 'description': 'сделать что-то'}]
+#         "done": [...]
+#     }
+
     def update_task(
         self,
         user_id: int,

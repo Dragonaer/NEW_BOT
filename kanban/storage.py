@@ -81,6 +81,21 @@ class JsonStorage:
         with open(self.path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
+    def get_all_tasks(self, user_id) -> dict | None:
+        if os.path.exists(self.path):
+            with open(self.path) as f:
+                data = json.load(f)
+        else:
+            return None
+        
+        if user_id in data:
+            return data[user_id]
+        else: 
+            return None
+
+
+
+
 # file =
 # {
 #     "321": ...
