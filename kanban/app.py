@@ -45,7 +45,9 @@ def add_new_task(message):
         task = task_service.create_task(message.chat.id, name, description)
         bot.send_message(
             message.chat.id,
-            ("Задача создана успешно и занесена в список задач." f"{task.name}"),
+            ("Задача создана успешно и занесена в список задач.\n"
+             "Название новой задачи: \n" 
+             f"{task.name}"),
         )
 
 
