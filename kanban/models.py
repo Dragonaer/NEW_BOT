@@ -8,7 +8,8 @@ class TaskStatus(StrEnum):
 
 
 class Task:
-    def __init__(self, name: str, description: str | None, status: TaskStatus = TaskStatus.TO_DO):
+    def __init__(self, task_id: int, name: str, description: str | None, status: TaskStatus = TaskStatus.TO_DO):
+        self.id = task_id
         self.name = name
         self.description = description
         self.status = status
