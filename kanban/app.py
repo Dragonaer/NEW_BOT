@@ -55,11 +55,25 @@ def get_all_tasks(message):
     tasks = task_service.get_tasks(message.chat.id)
     markup = types.InlineKeyboardMarkup(row_width=3)
     for task in tasks:
-        markup.add(types.InlineKeyboardButton(task.name, callback_data="task_{task.name}"))
+        markup.add(types.InlineKeyboardButton(task.name, callback_data="task_{task.id}"))
     bot.send_message(
         message.chat.id,
         "Задачи:",
         reply_markup=markup
+    )
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith("task_"))
+def get_task_info(call):
+    task_id = int(call.data.lstrip("task_"))
+    user_id = int(call.message.chat.id)
+    one_task = store.get_task_by_id(user_id, task_id)
+    # markup = types.InlineKeyboardMarkup(row_width=3)
+    # TODO: добавить клавиатуру с изменением задачи
+    bot.send_message(
+        call.message.chat.id,
+        (f"Имя задачи: {one_task.name}\n"
+         f"Описание зада: {one_task.description}\n"
+         f"Статус задачи: {one_task.status.value}"),
     )
 
 
