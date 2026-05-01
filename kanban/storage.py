@@ -42,16 +42,20 @@ class JsonStorage:
             return data[user_id]["current_task_id"]
         
         
-    def get_task_by_id(self, user_id: int, task_id: int) -> Task:
+    def get_task_by_id(self, user_id: int, task_id: int) -> Task | None:
         with open(self.path) as f:
             data = json.load(f)
-
-        user = data[str(user_id)]
+        if user_id in data:
+            user = data[str(user_id)]
+        else:
+            return None
+        
         for task in user["tasks"]:
             if task["id"] == task_id:
-                return Task(task["task_id"], task["name"], task["description"], task["status"])
+                return Task(task["task_id"], task["name"], task["description"], TaskStatus(task["status"]))
+        return None
 
-    def save_task(self, user_id: int, task: Task):
+    def save_task(self, user_id: int, task: Task) -> None:
         with open(self.path) as f:
             data = json.load(f)
        
@@ -70,7 +74,7 @@ class JsonStorage:
         user = data[user_id]
         for i, element in enumerate(user["tasks"]):
             if element["id"] == task.id:
-                user["tasks"][i] = task_data
+                user["tasks"][i] = task_data  
                 break
         else:
             user["tasks"].append(task_data)
@@ -86,7 +90,16 @@ class JsonStorage:
             return None
         
         if user_id in data:
-            return data[user_id]
+            all_tasks = data[user_id]["tasks"]
+            tasks = []
+            for task in all_tasks:
+                tasks.append(Task(
+                    task_id=task['id'],
+                    name=task['name'],
+                    description=task['description'],
+                    status=TaskStatus(task['status']),
+                ))
+            return tasks
         else: 
             return None
 
